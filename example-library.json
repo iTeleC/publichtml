@@ -1,0 +1,46 @@
+{
+  "format": "IsotopeLab",
+  "version": 2,
+  "channels": [
+    {
+      "id": "example_channel",
+      "name": "ДЕМО: условный облучательный канал",
+      "thermal": 1.6e14,
+      "epi": 2e12,
+      "fast": 1e12,
+      "note": "Вымышленные потоки, НЕ реальные данные ИРТ-Т."
+    }
+  ],
+  "isotopes": [
+    {
+      "id": "lu176_example",
+      "name": "176Lu(n,gamma)177Lu — демонстрация",
+      "scheme": "direct",
+      "targetMass": 175.9438,
+      "productHalfDays": 6.647,
+      "precursorHalfHours": 0,
+      "thermal": 2090,
+      "epi": 0,
+      "fast": 0,
+      "productThermal": 0,
+      "productEpi": 0,
+      "productFast": 0,
+      "note": "Иллюстративная модель; значения требуют проверки по ядерным данным и спектру канала."
+    },
+    {
+      "id": "yb176_example",
+      "name": "176Yb(n,gamma)177Yb -> 177Lu — демонстрация",
+      "scheme": "chain",
+      "targetMass": 175.9426,
+      "productHalfDays": 6.647,
+      "precursorHalfHours": 1.9,
+      "thermal": 2.85,
+      "epi": 0,
+      "fast": 0,
+      "productThermal": 0,
+      "productEpi": 0,
+      "productFast": 0,
+      "note": "Только для демонстрации."
+    }
+  ]
+}

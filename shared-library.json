@@ -1,0 +1,37 @@
+{
+  "format": "IsotopeLab",
+  "version": 3,
+  "channels": [],
+  "isotopes": [
+    {
+      "id": "shared_lu176_direct",
+      "name": "176Lu(n,gamma)177Lu — демонстрация",
+      "scheme": "direct",
+      "targetMass": 175.9438,
+      "productHalfDays": 6.647,
+      "precursorHalfHours": 0,
+      "thermal": 2090,
+      "epi": 0,
+      "fast": 0,
+      "productThermal": 0,
+      "productEpi": 0,
+      "productFast": 0,
+      "note": "Иллюстративная модель; значения требуют проверки по ядерным данным и спектру канала."
+    },
+    {
+      "id": "shared_yb176_chain",
+      "name": "176Yb(n,gamma)177Yb -> 177Lu — демонстрация",
+      "scheme": "chain",
+      "targetMass": 175.9426,
+      "productHalfDays": 6.647,
+      "precursorHalfHours": 1.9,
+      "thermal": 2.85,
+      "epi": 0,
+      "fast": 0,
+      "productThermal": 0,
+      "productEpi": 0,
+      "productFast": 0,
+      "note": "Только для демонстрации."
+    }
+  ]
+}
