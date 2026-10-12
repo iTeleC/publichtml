@@ -1,0 +1,754 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Медицинские и промышленные изотопы</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Unbounded:wght@400;500;600&display=swap">
+<style>
+/* Layout: reading column (76rem) opened by a nuclide-chart map of every position; the summary table breaks out to a wide band; tile colour = decay mode as on the Karlsruhe chart of nuclides. */
+:root{
+  --bg:#f2f5f8; --surface:#ffffff; --ink:#122130; --muted:#566778; --line:#d5dde6;
+  --accent:#1a5bc0; --accent-ink:#ffffff; --accent-soft:#e3ecf8;
+  --d-b:#a3cdee; --d-e:#f2a197; --d-a:#f4d86f; --d-i:#fbfcfd;
+  --tile-ink:#0e1923; --tile-line:rgba(14,25,35,.24);
+  --font-display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --font-body:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,"SFMono-Regular",Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#09131d; --surface:#0f1c29; --ink:#e1e9f0; --muted:#93a5b6; --line:#213448;
+    --accent:#74b5ff; --accent-ink:#071320; --accent-soft:#122d4a;
+    --d-b:#86b8e0; --d-e:#e28a80; --d-a:#e3c35c; --d-i:#d8e1e9;
+    --tile-line:rgba(0,0,0,.4);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#09131d; --surface:#0f1c29; --ink:#e1e9f0; --muted:#93a5b6; --line:#213448;
+  --accent:#74b5ff; --accent-ink:#071320; --accent-soft:#122d4a;
+  --d-b:#86b8e0; --d-e:#e28a80; --d-a:#e3c35c; --d-i:#d8e1e9;
+  --tile-line:rgba(0,0,0,.4);
+  color-scheme:dark;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--ink);font:400 1rem/1.55 var(--font-body)}
+a{color:var(--accent)}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.wrap{max-width:76rem;margin-inline:auto;padding-inline:clamp(1rem,3vw,2rem)}
+.wide{max-width:112rem}
+p{margin:0}
+h2{font:500 clamp(1.2rem,2.2vw,1.45rem)/1.25 var(--font-display);letter-spacing:-.01em;margin:0 0 1rem;text-wrap:balance}
+h3{text-wrap:balance}
+
+/* header */
+.top{padding-block:clamp(2rem,5vw,3.5rem) 1.5rem;display:grid;gap:1rem}
+.eyebrow{font:500 .72rem/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+h1{font:500 clamp(1.7rem,3.8vw,2.85rem)/1.12 var(--font-display);letter-spacing:-.015em;margin:0;text-wrap:balance}
+.sub{font-size:1.08rem;color:var(--muted)}
+.lead{max-width:64ch;font-size:1.04rem}
+.toc{display:flex;flex-wrap:wrap;gap:.35rem 1.25rem;font:500 .86rem var(--font-body)}
+.toc a{text-decoration:none;border-bottom:1px solid color-mix(in srgb,var(--accent) 40%,transparent)}
+.toc a:hover{border-bottom-color:var(--accent)}
+
+/* nuclide map */
+.map{display:grid;gap:1rem;margin-top:.75rem}
+.map-group{display:grid;gap:.45rem}
+.map-label{display:flex;gap:.6rem;align-items:baseline;font:600 .74rem/1.2 var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.map-label b{font:500 .74rem var(--font-mono);color:var(--ink);letter-spacing:0}
+.tiles{display:flex;flex-wrap:wrap;gap:.3rem}
+.tile{position:relative;flex:0 0 auto;width:4.35rem;height:4.35rem;display:grid;place-items:center;border:1px solid var(--tile-line);background:var(--d-b);color:var(--tile-ink);text-decoration:none;font-family:var(--font-display);transition:transform .15s ease}
+a.tile:hover{transform:translateY(-2px)}
+.tile .A{position:absolute;top:.32rem;left:.36rem;font:500 .6rem/1 var(--font-mono)}
+.tile .S{font-size:1.2rem;font-weight:500;line-height:1}
+.tile .T{position:absolute;bottom:.32rem;left:0;right:0;text-align:center;font:400 .56rem/1 var(--font-mono)}
+.tile .M{position:absolute;top:.32rem;right:.36rem;font:600 .55rem/1 var(--font-body);letter-spacing:.03em}
+.tile.d-b{background:var(--d-b)} .tile.d-e{background:var(--d-e)} .tile.d-a{background:var(--d-a)} .tile.d-i{background:var(--d-i)}
+.tile.sm{width:3.1rem;height:3.1rem}
+.tile.sm .S{font-size:.9rem} .tile.sm .A{font-size:.5rem;top:.25rem;left:.28rem} .tile.sm .T,.tile.sm .M{display:none}
+.legend{display:flex;flex-wrap:wrap;gap:.45rem 1.5rem;font-size:.8rem;color:var(--muted);align-items:center}
+.legend span{display:inline-flex;align-items:center;gap:.4rem}
+.sw{width:.95rem;height:.95rem;border:1px solid var(--tile-line);display:inline-block}
+
+/* sections */
+section{padding-block:2.25rem}
+.findings-lead{max-width:66ch;font-size:1.02rem;margin-bottom:1.5rem}
+.findings{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,21rem),1fr));gap:1.5rem 2.25rem}
+.finding{min-width:0}
+.finding h3{font:600 1rem/1.35 var(--font-body);margin:0 0 .35rem}
+.finding p{font-size:.92rem;color:var(--ink)}
+
+.scope{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.15fr);gap:1.5rem 2.5rem;align-items:start}
+.scope p{font-size:.92rem;max-width:62ch}
+.scope dl{margin:0;display:grid;grid-template-columns:auto minmax(0,1fr);gap:.5rem 1rem;font-size:.86rem}
+.scope dt{font-weight:600;white-space:nowrap}
+.scope dd{margin:0;color:var(--muted)}
+
+/* badges */
+.b{display:inline-flex;align-items:center;justify-content:center;min-width:1.45rem;height:1.45rem;padding:0 .3rem;font:600 .74rem/1 var(--font-body);border-radius:3px;box-sizing:border-box}
+.b-r{background:var(--accent);color:var(--accent-ink);border:1.5px solid var(--accent)}
+.b-u{border:1.5px solid var(--accent);color:var(--accent);background:transparent}
+.b-g{border:1.5px dashed var(--muted);color:var(--ink);background:transparent}
+
+/* filters */
+.filters{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--bg);padding-block:.75rem;display:flex;flex-wrap:wrap;gap:.6rem 1rem;align-items:center;border-bottom:1px solid var(--line)}
+.seg{display:inline-flex;flex-wrap:wrap}
+.seg button,.tg{font:500 .82rem/1.2 var(--font-body);padding:.45rem .75rem;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.seg button+button{margin-left:-1px}
+.seg button:first-child{border-radius:4px 0 0 4px} .seg button:last-child{border-radius:0 4px 4px 0}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink);position:relative;z-index:1}
+.seg button span{font-family:var(--font-mono);font-size:.74rem;opacity:.7;margin-left:.35rem}
+.types-f{display:inline-flex;gap:.35rem;flex-wrap:wrap}
+.tg{display:inline-flex;align-items:center;gap:.4rem;border-radius:4px;padding:.3rem .6rem .3rem .35rem}
+.tg[aria-pressed="false"]{opacity:.45}
+.search{flex:1 1 14rem;min-width:0}
+.search input{width:100%;box-sizing:border-box;font:400 .88rem var(--font-body);padding:.5rem .7rem;border:1px solid var(--line);border-radius:4px;background:var(--surface);color:var(--ink)}
+.count{font:400 .78rem var(--font-mono);color:var(--muted);white-space:nowrap}
+
+/* table */
+.tbl{overflow-x:auto;background:var(--surface);border:1px solid var(--line);border-radius:6px;margin-top:1rem}
+table{border-collapse:collapse;width:100%;min-width:74rem;font-size:.86rem;line-height:1.48}
+th{text-align:left;font:600 .68rem/1.3 var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);padding:.8rem .9rem;border-bottom:1px solid var(--line)}
+td{padding:.85rem .9rem;vertical-align:top;border-bottom:1px solid var(--line)}
+tr:last-child td{border-bottom:none}
+th.c-iso{width:12%} th.c-type{width:10%} th.c-act{width:17%} th.c-use{width:15%} th.c-ch{width:18%} th.c-cm{width:28%}
+tr.grp td{background:var(--accent-soft);padding:1rem .9rem}
+tr.grp h3{font:500 1rem/1.3 var(--font-display);margin:0 0 .3rem}
+tr.grp p{max-width:95ch;font-size:.86rem}
+tr.note td{color:var(--muted);font-size:.82rem}
+tr.empty td{text-align:center;color:var(--muted);padding:2rem}
+tr.empty button{margin-top:.6rem;font:500 .85rem var(--font-body);padding:.45rem .9rem;border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:4px;cursor:pointer}
+.iso{display:flex;gap:.65rem;align-items:flex-start}
+.iso .nm{font:600 .93rem/1.25 var(--font-body)}
+.iso .hl{font:400 .72rem/1.35 var(--font-mono);color:var(--muted);margin-top:.15rem}
+.typebox{display:flex;gap:.25rem;flex-wrap:wrap;margin-bottom:.35rem}
+.tnote{font-size:.76rem;color:var(--muted)}
+.rx{font-family:var(--font-mono);font-size:.9em;white-space:nowrap}
+sup.ref{font:600 .66em/0 var(--font-mono);margin-left:.08em}
+sup.ref a{text-decoration:none;padding:0 .06em}
+sup.ref a:hover{text-decoration:underline}
+tr.flash td{animation:flash 2s ease-out}
+@keyframes flash{from{background:color-mix(in srgb,var(--accent) 24%,var(--surface))}to{background:var(--surface)}}
+
+/* ladder */
+.an-lead{max-width:68ch;margin-bottom:1.5rem}
+.ladder{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.75rem;align-items:start;margin-bottom:2.25rem}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding:1rem;display:grid;gap:.65rem;min-width:0}
+.step:nth-child(1){margin-top:3.6rem} .step:nth-child(2){margin-top:2.4rem} .step:nth-child(3){margin-top:1.2rem}
+.step .bar{height:.4rem;border-radius:2px}
+.step:nth-child(1) .bar{background:color-mix(in srgb,var(--accent) 25%,transparent)}
+.step:nth-child(2) .bar{background:color-mix(in srgb,var(--accent) 50%,transparent)}
+.step:nth-child(3) .bar{background:color-mix(in srgb,var(--accent) 75%,transparent)}
+.step:nth-child(4) .bar{background:var(--accent);box-shadow:0 0 14px color-mix(in srgb,var(--accent) 55%,transparent)}
+.flux{font:500 1.05rem/1.2 var(--font-mono)}
+.flux small{display:block;font:400 .72rem var(--font-body);color:var(--muted);margin-top:.2rem}
+.chips{display:flex;flex-wrap:wrap;gap:.3rem}
+.chip{display:inline-block;padding:.2rem .5rem;border:1px solid var(--line);border-radius:3px;font-size:.8rem;line-height:1.35;color:var(--ink);text-decoration:none}
+a.chip:hover{border-color:var(--accent);color:var(--accent)}
+.where{font-size:.78rem;color:var(--muted)}
+.where b{font-weight:600;color:var(--ink)}
+.an-block{display:grid;grid-template-columns:minmax(0,15rem) minmax(0,1fr);gap:.75rem 2.5rem;padding-block:1.25rem}
+.an-block h3{font:500 1rem/1.35 var(--font-display);margin:0}
+.an-block ul{margin:0;padding-left:1.1rem;display:grid;gap:.6rem;max-width:72ch;font-size:.93rem}
+
+/* sources */
+ol.src{margin:0;padding-left:1.6rem;columns:2 26rem;column-gap:3rem;font-size:.84rem}
+ol.src li{break-inside:avoid;margin-bottom:.55rem;padding-left:.2rem}
+ol.src li::marker{font-family:var(--font-mono);color:var(--muted)}
+ol.src .m{color:var(--muted)}
+.src-note{font-size:.86rem;color:var(--muted);max-width:70ch;margin-bottom:1rem}
+footer{padding-block:1.5rem 3rem;font-size:.8rem;color:var(--muted);border-top:1px solid var(--line)}
+
+@media (max-width:960px){
+  .scope{grid-template-columns:minmax(0,1fr)}
+  .ladder{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .step:nth-child(n){margin-top:0}
+  .an-block{grid-template-columns:minmax(0,1fr)}
+  .tbl{border:none;background:none;overflow:visible}
+  table{min-width:0}
+  thead{display:none}
+  table,tbody,tr,td{display:block}
+  tbody{display:grid;gap:.75rem}
+  tr.row{background:var(--surface);border:1px solid var(--line);border-radius:6px;padding-block:.35rem}
+  tr.row td{border:none;padding:.4rem 1rem}
+  tr.row td[data-label]::before{content:attr(data-label);display:block;font:600 .64rem/1.3 var(--font-body);letter-spacing:.07em;text-transform:uppercase;color:var(--muted);margin-bottom:.15rem}
+  tr.grp td,tr.note td{border-radius:6px;border:none}
+  tr.note td{padding:.2rem .2rem .6rem}
+  tr.grp{margin-top:.75rem}
+}
+@media (max-width:560px){
+  .ladder{grid-template-columns:minmax(0,1fr)}
+  .tile{width:3.7rem;height:3.7rem}
+  .tile .S{font-size:1rem}
+  .seg button{padding:.42rem .55rem}
+}
+@media (prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *{animation:none!important;transition:none!important}
+}
+</style>
+
+<header class="wrap top">
+  <div class="eyebrow">Аналитический обзор · по состоянию на 12.10.2026</div>
+  <h1>Медицинские и промышленные изотопы</h1>
+  <p class="sub">Наработка на исследовательских реакторах и ускорителях</p>
+  <p class="lead">Диагностика по-прежнему держится на реакторном Mo-99, а рост рынка обеспечивают терапевтические изотопы — Lu-177 и альфа-эмиттеры, где ускорители впервые конкурируют с реакторами на равных.</p>
+  <nav class="toc" aria-label="Разделы">
+    <a href="#vyvody">Ключевые выводы</a>
+    <a href="#tablica">Сводная таблица</a>
+    <a href="#analitika">Аналитика</a>
+    <a href="#istochniki">Источники</a>
+  </nav>
+  <div class="map" id="map" aria-label="Карта позиций таблицы"></div>
+  <div class="legend" id="legend"></div>
+</header>
+
+<main>
+  <section class="wrap" id="vyvody">
+    <h2>Ключевые выводы</h2>
+    <div class="findings" data-refs>
+      <div class="finding">
+        <h3>Mo-99/Tc-99m — основа диагностики и главный риск</h3>
+        <p>Tc-99m используется в 80–85% процедур ядерной медицины, Mo-99 — в более чем 40 млн процедур в год. Около 95% мирового Mo-99 нарабатывают шесть ИР (BR2, SAFARI-1, LVR-15, MARIA, HFR, OPAL), пять из них введены в 1957–1974 гг.; внеплановый останов HFR в октябре 2024 г. снова вызвал дефицит [1]. Мировой спрос — порядка 9 000–10 000 шестидневных Ки в неделю.</p>
+      </div>
+      <div class="finding">
+        <h3>Безурановые маршруты Mo-99 пока проигрывают экономически</h3>
+        <p>NorthStar (Mo-98(n,γ) и фотоядерный Mo-100(γ,n)) прекратила выпуск Mo-99 в 2023 г., сославшись на конкуренцию с субсидируемыми производителями [3]. Следующая волна — SHINE Chrysalis (подкритическая LEU-сборка с D-T источниками нейтронов, до 8 200 шестидневных Ки/нед., коммерческий выпуск с 1-й фазы ~2027 г.) [2], PALLAS (начало 2030-х), JHR (~2032), RA-10, а также наработка в CANDU (Darlington).</p>
+      </div>
+      <div class="finding">
+        <h3>Lu-177 — главный драйвер роста</h3>
+        <p>В 2024 г. распределено около 35 тыс. доз Pluvicto (~11 тыс. пациентов) и около 12 тыс. циклов Lutathera [4]. При 7,4 ГБк на дозу это порядка 350 ТБк (~9 500 Ки) введённой активности в год без учёта распада при доставке (оценка по этим данным). Рынок смещается к n.c.a. Lu-177 из Yb-176; ограничения — обогащённый Yb-176 (исторически в основном из России), высокопоточные позиции облучения и рецикл мишеней [1].</p>
+      </div>
+      <div class="finding">
+        <h3>Альфа-эмиттеры — основной дефицит и основная зона ускорителей</h3>
+        <p>Ac-225 масштабируют одновременно из Th-229 (TerraPower планирует 20-кратный рост выпуска за счёт новой площадки в Филадельфии) [8], фотоядерным маршрутом Ra-226(γ,n) (NorthStar — рутинный выпуск с IV кв. 2025 г. [7]; PanTera — сотни Ки/год с 2029 г. [9]) и скалыванием тория. Pb-212 и At-211 пока на стадии клинических испытаний.</p>
+      </div>
+      <div class="finding">
+        <h3>ПЭТ-изотопы полностью ускорительные</h3>
+        <p>F-18, C-11, N-13, O-15, Cu-64, Zr-89 нарабатывают на медицинских циклотронах 10–30 МэВ, а материнские нуклиды генераторов Sr-82 и Ge-68 — на шести–семи протонных ускорителях 40–100 МэВ в мире (BNL, LANL, ИЯИ РАН, iThemba, ARRONAX, TRIUMF) [17].</p>
+      </div>
+      <div class="finding">
+        <h3>Промышленные изотопы уходят на энергоблоки, кроме «тяжёлых» позиций</h3>
+        <p>Более половины мирового Co-60 дают канадские CANDU [21], но Ir-192, Se-75, Yb-169 для дефектоскопии, активационные трассеры и особенно Cf-252, W-188, Ni-63, Pu-238 остаются за ИР; последние четыре требуют потока ≥ 10¹⁵ н/(см²·с) или многолетнего облучения и доступны лишь HFIR, СМ-3 и немногим другим.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="wrap" id="ramki">
+    <h2>Рамки и обозначения</h2>
+    <div class="scope">
+      <p>Обзор охватывает радионуклиды, которые в мире нарабатывают на исследовательских реакторах (ИР) и ускорителях — циклотронах, линейных ускорителях электронов, протонных ускорителях высоких энергий и ISOL-установках — для ядерной медицины и промышленности. Co-60 нарабатывают в основном на энергоблоках, но он включён в часть В, поскольку ИР участвуют в его производстве; изотопы, выделяемые из ОЯТ (Cs-137, Sr-90, Am-241, Kr-85), упомянуты только в примечании к части В.</p>
+      <dl>
+        <dt><span class="b b-r">Р</span> <span class="b b-u">У</span> <span class="b b-g">Г</span></dt>
+        <dd>Реакторный, ускорительный, генераторный (материнский нуклид нарабатывается на Р или У).</dd>
+        <dt>Требуемая активность</dt>
+        <dd>Назначаемая активность на процедуру или цикл для взрослого пациента (инструкции по применению, рекомендации EANM/SNMMI), активность изделия (генератор, закрытый источник) и, где опубликована, мировая потребность. «Ориентир.» — типовое значение; дозу определяет лечащий врач по массе тела и протоколу.</dd>
+        <dt>1 Ки = 37 ГБк</dt>
+        <dd>1 мКи = 37 МБк.</dd>
+        <dt>6-day Ci</dt>
+        <dd>Активность Mo-99 через 6 суток после выпуска с установки переработки; единица рыночного учёта OECD/NEA.</dd>
+        <dt>c.a. / n.c.a.</dt>
+        <dd>С носителем / без добавленного носителя; определяет удельную активность препарата.</dd>
+        <dt>Высокопоточный ИР</dt>
+        <dd>Плотность потока тепловых нейтронов ≥ 10¹⁴ н/(см²·с).</dd>
+        <dt>Цвет плитки</dt>
+        <dd>Основной тип распада, как на карте нуклидов Карлсруэ: β⁻ — синий, β⁺/ЭЗ — красный, α — жёлтый, изомерный переход — белый.</dd>
+      </dl>
+    </div>
+  </section>
+
+  <section class="wrap wide" id="tablica">
+    <h2>Сводная таблица</h2>
+    <div class="filters" role="group" aria-label="Фильтры таблицы">
+      <div class="seg" id="seg-part"></div>
+      <div class="types-f" id="seg-type"></div>
+      <label class="search" for="q"><input id="q" type="search" placeholder="Поиск: изотоп, применение, производитель…" autocomplete="off"></label>
+      <span class="count" id="count" aria-live="polite"></span>
+    </div>
+    <div class="tbl">
+      <table>
+        <thead>
+          <tr>
+            <th class="c-iso" scope="col">Изотоп (T½)</th>
+            <th class="c-type" scope="col">Тип</th>
+            <th class="c-act" scope="col">Требуемая активность</th>
+            <th class="c-use" scope="col">Область применения</th>
+            <th class="c-ch" scope="col">Цепочка получения</th>
+            <th class="c-cm" scope="col">Комментарии</th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="wrap" id="analitika">
+    <h2>Аналитика</h2>
+    <p class="an-lead">Для ИР со средним потоком (10¹³–10¹⁴ н/(см²·с)) реалистичная ниша — нуклиды с большим сечением захвата в c.a.-форме и короткоживущие трассеры; n.c.a. Lu-177 и Tb-161 в промышленном масштабе, W-188, Cf-252 и высокоудельный Ni-63 требуют потоков порядка 10¹⁵ и обогащённых мишеней.</p>
+    <h3 style="font:500 1rem/1.35 var(--font-display);margin:0 0 .9rem">Что реалистично нарабатывать при данной плотности потока тепловых нейтронов</h3>
+    <div class="ladder" id="ladder"></div>
+
+    <div class="an-block" data-refs>
+      <h3>Конкуренция реакторных и ускорительных маршрутов</h3>
+      <ul>
+        <li><b>Ускорители выигрывают</b> там, где нужны короткоживущие нуклиды рядом с пациентом (весь ПЭТ), где реакторный маршрут даёт неустранимые примеси, или где мишень дефицитна и её выгоднее облучать фотонами, чем нейтронами (Ra-226 для Ac-225).</li>
+        <li><b>Реакторы сохраняют преимущество</b> по массовым β⁻-эмиттерам (Lu-177, I-131, Y-90, Sm-153) и по нуклидам многократного захвата, где альтернатив нет.</li>
+        <li><b>Электронные ускорители</b> (Rhodotron, сверхпроводящие линаки) стали отдельной платформой для Cu-67, Ac-225, Sc-47 и Mo-99 без делящихся материалов. Выход NorthStar из Mo-99 в 2023 г. показал, что против субсидируемого реакторного Mo-99 такая модель пока не окупается [3].</li>
+        <li><b>Гибридные схемы</b>: SHINE (ускорительный D-T источник и подкритическая LEU-сборка) [2]; MYRRHA (ADS на замену BR2) [1].</li>
+        <li><b>Энергетические реакторы</b> (CANDU) забирают массовые позиции у ИР: Co-60, Lu-177 (Bruce, с 2022 г.), Mo-99, Y-90 и Lu-177 (Darlington) [1]. Для ИР это давление на цену в «объёмных» продуктах и стимул уходить в высокопоточные и нишевые позиции.</li>
+      </ul>
+    </div>
+    <div class="an-block" data-refs>
+      <h3>Тенденции 2024–2026</h3>
+      <ul>
+        <li><b>Сдвиг от диагностики к терапии.</b> РЛТ с Lu-177 стала основным источником роста; альфа-терапия (Ac-225, Pb-212, At-211) переходит из клинических испытаний к коммерческим мощностям.</li>
+        <li><b>Обогащённые стабильные изотопы — новое узкое место</b>: Yb-176, Gd-160, Mo-100, Xe-124, Ni-64, O-18, а также Ra-226 как сырьё для Ac-225 и Ra-223. По Yb-176 исторически основной поставщик — Россия; США и Канада развивают собственное обогащение (SHINE, Kinectrics) [1].</li>
+        <li><b>Замена стареющих ИР</b>: PALLAS (55 МВт, начало 2030-х, господдержка 2 млрд евро), JHR (~2032 г., 25–50% европейской потребности в Mo-99), RA-10 [1]. До их ввода рынок Mo-99 остаётся уязвим к внеплановым остановам.</li>
+        <li><b>Регулирование</b>: NEA предлагает создать Экспертную группу по медицинским радиоизотопам (возможный запуск — январь 2026 г.) с прогнозами спроса и на новые терапевтические изотопы [1].</li>
+      </ul>
+    </div>
+    <div class="an-block" data-refs>
+      <h3>Положение России</h3>
+      <ul>
+        <li>Росатом входит в пятёрку крупнейших мировых поставщиков сырьевой изотопной продукции; его медицинская изотопная продукция обеспечивает около 2,5 млн процедур в РФ и за рубежом [25].</li>
+        <li>Номенклатура предприятий Росатома включает Mo-99, Tc-99m, Sm-153, I-131, I-125, Lu-177, Ac-225, Ra-223, W-188, Co-60, Ir-192 [24]. Lu-177 выпускает в том числе АО «ИРМ» [26]; Ac-225 — ФЭИ и НИИАР [11]; Sr-82 и Ac-225 скалыванием — ИЯИ РАН [19]; W-188 и Cf-252 — СМ-3 НИИАР.</li>
+        <li>Завод РФЛП «Росатом Наука» в Калужской области: две линии в опытно-промышленной эксплуатации с августа 2026 г., выход на проектную мощность — 2028 г., к 2030 г. — до 1,5 млн процедур в год; профиль — препараты на основе Ra-223 и Ac-225 [23].</li>
+        <li>Членство России в NEA приостановлено [1] — это стоит учитывать, используя сводки NEA как источник по мировым мощностям.</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="wrap" id="istochniki">
+    <h2>Источники</h2>
+    <p class="src-note">Номера соответствуют ссылкам в тексте и таблице. Значения без ссылки — справочные ядерно-физические данные и типовые клинические диапазоны; помеченные «ориентир.» требуют уточнения по конкретной инструкции или протоколу.</p>
+    <ol class="src" id="src"></ol>
+  </section>
+</main>
+
+<footer class="wrap">Аналитический обзор по открытым источникам · по состоянию на 12 октября 2026 г.</footer>
+
+<script>
+(function(){
+const SRC = [null,
+ {t:`NEA (2025). Current Trends in the Supply and Utilisation of Medical Radioisotopes, NEA No. 7743`, u:`https://oecd-nea.org/upload/docs/application/pdf/2025-10/7743_medical_radioisotopes_supply_rev.pdf`, m:`OECD NEA, v1.1, 21.10.2025`},
+ {t:`Shine receives $263M conditional DOE loan to complete isotope facility`, u:`https://www.ans.org/news/2026-04-09/article-7924/shine-receives-263m-conditional-doe-loan-to-complete-isotope-facility/`, m:`ANS Nuclear News, 09.04.2026`},
+ {t:`NorthStar to end production of Mo-99`, u:`https://www.auntminnie.com/clinical-news/radiation-oncology-therapy/article/15636019/northstar-to-end-production-of-mo99`, m:`AuntMinnie, 2023`},
+ {t:`Lutetium-177 therapy: forecast vs. actual use (Pluvicto, Lutathera, 2024)`, u:`https://jnm.snmjournals.org/content/66/3/333`, m:`J Nucl Med 66(3):333, 2025`},
+ {t:`ITM and ILL Extend Collaboration on the Manufacturing and Supply of Medical Lutetium-177`, u:`https://www.ill.eu/en/about-the-ill/news-and-events/news/itm-and-ill-extend-collaboration-on-the-manufacturing-and-supply-of-medical-lutetium-177-radioisotop/`, m:`ILL, 16.06.2025`},
+ {t:`VIOLET: first-in-human results of [161Tb]Tb-PSMA-I&T`, u:`https://publications.petermac.org/Publications/4837`, m:`Lancet Oncol 26(8):1009–1017, 2025`},
+ {t:`NorthStar — Actinium-225`, u:`https://www.northstarnm.com/radiopharmaceutical-therapy/actinium-225/`, m:`NorthStar Medical Radioisotopes`},
+ {t:`Ac-225 news (TerraPower, ITM–CNL, Niowave)`, u:`https://www.ans.org/news/tag-ac-225/`, m:`ANS Nuclear News, 2024–2026`},
+ {t:`PanTera breaks ground on Ac-225 facility`, u:`https://www.neimagazine.com/news/pantera-breaks-ground-on-ac-225-facility/`, m:`Nuclear Engineering International`},
+ {t:`Cardinal Health expands Actinium-225 production capacity`, u:`https://www.biospace.com/press-releases/cardinal-health-expands-actinium-225-production-capacity-to-support-growing-demand-for-novel-cancer-therapies`, m:`Cardinal Health, 01.04.2026`},
+ {t:`В России стартовало производство радиоактивного препарата для лечения рака (НИИАР, Ac-225)`, u:`https://profile.ru/news/znaj-nashih/v-rossii-startovalo-novoe-proizvodstvo-yadernogo-preparata-budushhego-protiv-raka-a999-1433011/`, m:`«Профиль», 21.12.2023`},
+ {t:`AlphaMedix (212Pb-DOTAMTATE) achieved all primary efficacy endpoints in phase 2`, u:`https://sanofi.com/en/media-room/press-releases/2025/2025-10-08-05-00-00-3163053`, m:`Sanofi, 08.10.2025`},
+ {t:`Alpha Fusion and Kobe City Medical Center establish At-211 investigational drug supply system`, u:`https://www.biospectrumasia.com/news/123/26728/japans-alpha-fusion-and-kobe-city-medical-center-general-hospital-establish-at-211-investigational-drug-supply-system.html`, m:`BioSpectrum Asia, 09.10.2025`},
+ {t:`ACSI completes factory testing of the first TR-ALPHA cyclotron`, u:`https://www.boardoftrade.com/files/pdf/TR-ALPHA_FAT_press_release_16.01.2025_-_Final.pdf`, m:`ACSI, 16.01.2025`},
+ {t:`NorthStar now routinely manufacturing Cu-67 for Clarity`, u:`https://www.businesswire.com/news/home/20230626574624/en`, m:`Business Wire, 26.06.2023`},
+ {t:`Clarity advances dose escalation in SECuRE trial`, u:`https://www.auntminnie.com/clinical-news/radiation-oncology-therapy/article/15634023/clarity-advances-dose-escalation-for-cohort-in-secure-trial`, m:`AuntMinnie, 2023`},
+ {t:`Production details from the current suppliers of 82Sr (Table 8)`, u:`https://pmc.ncbi.nlm.nih.gov/articles/PMC6420712/table/tbl08`, m:`PMC`},
+ {t:`LANL Isotope Program — products`, u:`https://www.lanl.gov/science-engineering/science-programs/office-of-science-programs/isotopes/products`, m:`Los Alamos National Laboratory`},
+ {t:`Production of Medical Radionuclides in Russia and Isotope Program in INR (B. Zhuikov)`, u:`https://indico.cern.ch/event/737755/`, m:`семинар CERN`},
+ {t:`iThemba LABS ready to start production of Sr-82 and Ge-68 using IBA Cyclone 70`, u:`https://www.iba-radiopharmasolutions.com/en/discover-and-learn/ithemba-labs-ready-start-production-strontium-82-and-germanium-68-using-iba`, m:`IBA, 23.01.2024`},
+ {t:`Co-60 tariffs would undermine U.S. health care, SSWG warns`, u:`https://www.ans.org/news/2025-11-12/article-7531/co60-tariffs-would-undermine-us-healthcare-sswg-warns/`, m:`ANS Nuclear News, 12.11.2025`},
+ {t:`Growing Supply: Cobalt-60 Production in the United States`, u:`https://iiaglobal.com/events/nordion-and-sterigenics-webinar-growing-supply-cobalt-60-production-in-the-united-states/`, m:`iia, 2026`},
+ {t:`Росатом запустил в Калужской области завод по производству радиофармпрепаратов нового поколения`, u:`https://www1.ru/news/2026/08/27/rosatom-zapustil-v-kaluzskoi-oblasti-zavod-po-proizvodstvu-radiofarmpreparatov-novogo-pokoleniia.html`, m:`www1.ru, 27.08.2026`},
+ {t:`«Росатом Технологии здоровья» — справочный материал`, u:`https://atommedia.online/upload/iblock/eee/eqzk2p7ti0pf66npiu6ifkfs4bzh9ynk/spravka_tehnologii_zdorovya_.docx`, m:`Медиацентр атомной промышленности, 20.03.2024`},
+ {t:`Медицинские изделия — справочный материал`, u:`https://atommedia.online/upload/iblock/cf6/yf4u6an3t0jfv2nfctul8v2cqu705v4r/spravka_med_izdeliya.docx`, m:`Медиацентр атомной промышленности, 13.02.2024`},
+ {t:`Перечень организаций в сфере ядерной медицины государств ЕАЭС`, u:`https://eec.eaeunion.org/upload/iblock/8c1/9ljgtxhkhonzj9zrueblcmucfp16nnfa/list_nuclear.pdf`, m:`Евразийская экономическая комиссия`}
+];
+
+const PARTS = {
+ A:{title:`А. Терапевтические радионуклиды`, short:`Терапия`, intro:`Из 21 позиции массовые зарегистрированные препараты есть у Lu-177, I-131, Y-90, Sm-153 и Ra-223; остальные — нишевые или в клинических испытаниях. У 19 из 21 есть реакторный маршрут; чисто ускорительными остаются Cu-67 и At-211.`, note:`Ir-192 (HDR-брахитерапия) и Co-60 (гамма-нож, телетерапия) приведены в части В вместе с промышленным применением.`},
+ B:{title:`Б. Диагностические радионуклиды`, short:`Диагностика`, intro:`80–85% диагностических процедур выполняются с Tc-99m из реакторного Mo-99; все ПЭТ-изотопы, включая материнские Ge-68 и Sr-82, — ускорительные.`, note:``},
+ C:{title:`В. Промышленные, калибровочные и исследовательские изотопы`, short:`Промышленность`, intro:`За ИР остаются источники для дефектоскопии, активационные трассеры и «тяжёлые» нуклиды многократного захвата; ускорители закрывают калибровочные и аналитические источники.`, note:`Cs-137, Sr-90, Am-241 и Kr-85 широко применяются в промышленности (облучатели, толщиномеры, каротаж, течеискание), но их выделяют из ОЯТ, а не нарабатывают на ИР или ускорителях, поэтому в таблицу они не включены.`}
+};
+
+const ROWS = [
+// ---------- A: therapy ----------
+{p:`A`,id:`lu177`,a:`177`,s:`Lu`,d:`b`,name:`Lu-177`,hl:`6,65 сут`,t:[`Р`],tn:`ИР; с 2022 г. также CANDU Bruce; SHINE — ускорительный источник нейтронов`,
+ act:`7,4 ГБк/цикл: Lutathera — 4 цикла через 8 нед., Pluvicto — до 6 циклов через 6 нед.; введено в мире ~350 ТБк за 2024 г. (оценка)`,
+ use:`РЛТ: НЭО (SSTR), мКРРПЖ (PSMA); в разработке — FAP и другие мишени`,
+ ch:`n.c.a.: Yb-176(n,γ)Yb-177 →β⁻ (1,9 ч) Lu-177; c.a.: Lu-176(n,γ)Lu-177`,
+ cm:`c.a.: σ ≈ 2 090 б, хватает 10¹³–10¹⁴, но примесь Lu-177m (160 сут) осложняет обращение с отходами. n.c.a.: σ(Yb-176) ≈ 2,85 б — нужен поток ≥ 10¹⁴ (оптимально ~10¹⁵: ILL, HFIR, СМ-3) и рецикл обогащённого Yb-176. ITM получила приоритет на половину мощности облучения ILL [5].`},
+{p:`A`,id:`i131`,a:`131`,s:`I`,d:`b`,name:`I-131`,hl:`8,02 сут`,t:[`Р`],tn:``,
+ act:`Гипертиреоз 185–740 МБк; абляция остатков ЩЖ 1,1–3,7 ГБк; метастазы РЩЖ 3,7–7,4 ГБк; I-131-MIBG 3,7–7,4 ГБк; диагностика 37–185 МБк`,
+ use:`Щитовидная железа; нейробластома, феохромоцитома (MIBG)`,
+ ch:`Te-130(n,γ)Te-131/Te-131m →β⁻ I-131 (сухая дистилляция из TeO₂) или из продуктов деления U-235 попутно с Mo-99`,
+ cm:`σ(Te-130) ≈ 0,2–0,3 б → облучают сотни граммов TeO₂; потока 10¹³–10¹⁴ достаточно. Крупнейший по активности продукт MARIA; RA-10 (Аргентина) рассчитан на Mo-99 и I-131 из LEU-мишеней [1].`},
+{p:`A`,id:`y90`,a:`90`,s:`Y`,d:`b`,name:`Y-90`,hl:`64,1 ч`,t:[`Р`,`Г`],tn:`генератор Sr-90/Y-90`,
+ act:`SIRT 1–3 ГБк (реже до ~5 ГБк) по дозиметрическому расчёту; радиосиновэктомия коленного сустава ~185–222 МБк; Y-90-ибритумомаб 11–15 МБк/кг (≤ 1,2 ГБк)`,
+ use:`Радиоэмболизация печени (стеклянные и смоляные микросферы), РСЭ, РИТ`,
+ ch:`Y-89(n,γ)Y-90 (активация готовых стеклянных микросфер); генератор Sr-90/Y-90 (Sr-90 — продукт деления из ОЯТ)`,
+ cm:`σ(Y-89) ≈ 1,28 б; иттрий моноизотопен, обогащение не нужно. Darlington (CANDU) готовит наработку Y-90 для Boston Scientific [1].`},
+{p:`A`,id:`ho166`,a:`166`,s:`Ho`,d:`b`,name:`Ho-166`,hl:`26,8 ч`,t:[`Р`],tn:``,
+ act:`SIRT: единицы ГБк (расчёт на ~60 Гр на печень), пробная доза ~250 МБк; РСЭ — сотни МБк`,
+ use:`Радиоэмболизация (микросферы с Ho), РСЭ, брахитерапия`,
+ ch:`Ho-165(n,γ)Ho-166, σ ≈ 64 б`,
+ cm:`Природный Ho моноизотопен; Ho виден и на МРТ (парамагнетик), и на ОФЭКТ. Входит в номенклатуру MARIA [1].`},
+{p:`A`,id:`sm153`,a:`153`,s:`Sm`,d:`b`,name:`Sm-153`,hl:`46,3 ч`,t:[`Р`],tn:``,
+ act:`37 МБк/кг (≈ 2–3 ГБк на пациента)`,
+ use:`Паллиатив болевого синдрома при костных метастазах (Sm-153-EDTMP; в РФ — «Самарий-оксабифор»)`,
+ ch:`Sm-152(n,γ)Sm-153, обогащённый Sm-152, σ ≈ 206 б`,
+ cm:`Доступен ИР среднего потока (10¹³–10¹⁴). Производится Росатомом [24] и на MARIA [1].`},
+{p:`A`,id:`sr89`,a:`89`,s:`Sr`,d:`b`,name:`Sr-89`,hl:`50,5 сут`,t:[`Р`],tn:``,
+ act:`148 МБк (4 мКи) однократно или 1,5–2,2 МБк/кг`,
+ use:`Паллиатив костных метастазов`,
+ ch:`Sr-88(n,γ)Sr-89 (тепловые нейтроны, мишень обеднена по Sr-84); Y-89(n,p)Sr-89 (быстрые нейтроны, n.c.a.)`,
+ cm:`(n,p)-маршрут даёт высокую удельную активность, но требует жёсткого спектра. Спрос стабилен или снижается из-за Ra-223 и Lu-177.`},
+{p:`A`,id:`p32`,a:`32`,s:`P`,d:`b`,name:`P-32`,hl:`14,3 сут`,t:[`Р`],tn:``,
+ act:`Сотни МБк (РСЭ, интерстициальные микрочастицы при раке поджелудочной железы; ориентир.)`,
+ use:`РСЭ, брахитерапия; метка в молекулярной биологии`,
+ ch:`S-32(n,p)P-32 (быстрые нейтроны, n.c.a.); P-31(n,γ)P-32 (c.a.)`,
+ cm:`Пороговая реакция — облучение в активной зоне с жёстким спектром.`},
+{p:`A`,id:`re188`,a:`188`,s:`Re`,d:`b`,name:`Re-188 / W-188`,hl:`17,0 ч / 69,8 сут`,t:[`Р`,`Г`],tn:`генератор W-188/Re-188`,
+ act:`Генератор: десятки ГБк W-188; Re-188-липиодол при ГЦК ~1,8–7 ГБк (ориентир.)`,
+ use:`ГЦК, рак кожи (паста с Re-188), РСЭ, паллиатив костных метастазов (Re-188-HEDP)`,
+ ch:`W-186(n,γ)W-187(n,γ)W-188 →β⁻ Re-188 (двойной захват)`,
+ cm:`Нужны поток ~10¹⁵ и длительное облучение: W-188 фактически нарабатывают только HFIR (ORNL) и СМ-3 (НИИАР). Генераторы Re-188 выпускаются в РФ [26].`},
+{p:`A`,id:`re186`,a:`186`,s:`Re`,d:`b`,name:`Re-186`,hl:`3,72 сут`,t:[`Р`,`У`],tn:``,
+ act:`РСЭ средних суставов 74–185 МБк`,
+ use:`РСЭ, паллиатив; РИТ (исследования)`,
+ ch:`Re-185(n,γ)Re-186 (c.a.); W-186(p,n)Re-186 или W-186(d,2n)Re-186 на циклотроне (n.c.a.)`,
+ cm:`Реакторный продукт низкой удельной активности годится для РСЭ; для РЛТ нужен ускорительный n.c.a.`},
+{p:`A`,id:`er169`,a:`169`,s:`Er`,d:`b`,name:`Er-169`,hl:`9,4 сут`,t:[`Р`],tn:``,
+ act:`РСЭ мелких суставов 20–40 МБк на сустав`,
+ use:`РСЭ; перспективная РЛТ`,
+ ch:`Er-168(n,γ)Er-169, σ ≈ 2,3 б`,
+ cm:`Для РЛТ нужна масс-сепарация (Er-169 и Er-168 химически неразделимы): ILL + CERN-MEDICIS/PSI.`},
+{p:`A`,id:`tb161`,a:`161`,s:`Tb`,d:`b`,name:`Tb-161`,hl:`6,9 сут`,t:[`Р`],tn:``,
+ act:`4,4–7,4 ГБк/цикл (VIOLET: рекомендованная доза 7,4 ГБк, до 6 циклов; изучается 9,5 ГБк) [6]`,
+ use:`РЛТ (PSMA, SSTR): β⁻ плюс оже- и конверсионные электроны; кандидат на смену Lu-177`,
+ ch:`Gd-160(n,γ)Gd-161 (3,7 мин) →β⁻ Tb-161`,
+ cm:`Схема как у n.c.a. Lu-177: обогащённый Gd-160 (σ ≈ 0,77 б), поток ≥ 10¹⁴, химическое отделение Tb от Gd. Диагностические партнёры Tb-152, Tb-155 и альфа-эмиттер Tb-149 получают на ISOL-установках (CERN-MEDICIS).`},
+{p:`A`,id:`sc47`,a:`47`,s:`Sc`,d:`b`,name:`Sc-47`,hl:`3,35 сут`,t:[`Р`,`У`],tn:``,
+ act:`Не установлена (доклиника, ранние испытания)`,
+ use:`Тераностическая пара с ПЭТ-изотопами Sc-43/Sc-44`,
+ ch:`Ca-46(n,γ)Ca-47 →β⁻ Sc-47; Ti-47(n,p)Sc-47 (быстрые нейтроны); Ti-48(γ,p)Sc-47 (ускоритель электронов)`,
+ cm:`Ca-46 крайне редок (0,004%) и дорог, что ограничивает реакторный маршрут. Sc-44 — Ca-44(p,n)Sc-44 на ПЭТ-циклотроне.`},
+{p:`A`,id:`cu67`,a:`67`,s:`Cu`,d:`b`,name:`Cu-67`,hl:`61,8 ч`,t:[`У`],tn:``,
+ act:`4–12 ГБк на введение (67Cu-SAR-bisPSMA, испытание SECuRE) [16]; 375 МБк/кг (67Cu-SARTATE, педиатрия)`,
+ use:`РЛТ (PSMA, SSTR) в тераностической паре с Cu-64`,
+ ch:`Zn-68(γ,p)Cu-67 (ускоритель электронов); Zn-70(p,α)Cu-67, Zn-68(p,2p)Cu-67 (протоны)`,
+ cm:`NorthStar рутинно нарабатывает на ускорителях Rhodotron с 2023 г. для Clarity [15]. Реакторный Zn-67(n,p) даёт мало продукта.`},
+{p:`A`,id:`ac225`,a:`225`,s:`Ac`,d:`a`,name:`Ac-225`,hl:`9,9 сут`,t:[`У`,`Р`],tn:`несколько маршрутов`,
+ act:`~100 кБк/кг на цикл (≈ 6–10 МБк на пациента) для PSMA- и SSTR-лигандов (ориентир.); выпуск из «коров» Th-229 — порядка 1,7 Ки/год (широко приводимая оценка)`,
+ use:`ТАТ: мКРРПЖ, НЭО и др.; генератор Ac-225/Bi-213`,
+ ch:`(1) распад Th-229 (из запасов U-233); (2) скалывание Th-232(p,x), протоны 100–800 МэВ; (3) Ra-226(p,2n) на циклотроне; (4) Ra-226(γ,n)Ra-225 →β⁻ Ac-225 (ускоритель электронов); (5) реактор: многократный захват на Ra-226 → Th-229`,
+ cm:`Скалывание даёт примесь Ac-227 (21,8 г). Наращивание: TerraPower — ×20 (новая площадка в Филадельфии) [8]; NorthStar — DMF принят FDA во II кв. 2026 г. [7]; Cardinal Health — выпуск ×4 [10]; PanTera — с 2029 г. [9]. В РФ — ФЭИ и НИИАР (с дек. 2023 г., ~10% мирового выпуска на старте) [11], ИЯИ РАН [19].`},
+{p:`A`,id:`ra223`,a:`223`,s:`Ra`,d:`a`,name:`Ra-223`,hl:`11,4 сут`,t:[`Р`,`Г`],tn:`Ac-227/Th-227/Ra-223`,
+ act:`55 кБк/кг × 6 введений с интервалом 4 нед. (≈ 4 МБк на введение)`,
+ use:`Костные метастазы мКРРПЖ (Xofigo)`,
+ ch:`Ra-226(n,γ)Ra-227 (42 мин) →β⁻ Ac-227 (21,8 г) →β⁻ Th-227 (18,7 сут) →α Ra-223`,
+ cm:`Ac-227 накапливают в ИР (σ(Ra-226) ≈ 12,8 б) и используют как долгоживущую «корову»; та же цепочка даёт Th-227 для конъюгатов. Завод РФЛП «Росатом Наука» в Калужской обл. (опытно-промышленная эксплуатация с авг. 2026 г., проектная мощность — 2028 г.) ориентирован на Ra-223 и Ac-225 [23].`},
+{p:`A`,id:`pb212`,a:`212`,s:`Pb`,d:`b`,name:`Pb-212`,hl:`10,6 ч`,t:[`Г`],tn:`Th-228/Ra-224/Pb-212`,
+ act:`AlphaMedix: ~2,5 МБк/кг на цикл, до 4 циклов (ориентир.)`,
+ use:`ТАТ: НЭО (212Pb-DOTAMTATE), PSMA и др.`,
+ ch:`Th-228 (1,9 г) →α Ra-224 (3,66 сут) →…→ Pb-212; Th-228 выделяют из U-232 и ториевых материалов или нарабатывают в ИР из Ra-226 (через Ac-227 и Ac-228)`,
+ cm:`212Pb-DOTAMTATE достиг всех первичных конечных точек II фазы; на окт. 2025 г. не зарегистрирован [12]. Пара для визуализации — Pb-203 (циклотрон, Tl-203(p,n)Pb-203). Pb-212 распадается β⁻, альфа-частицы испускают дочерние Bi-212/Po-212.`},
+{p:`A`,id:`at211`,a:`211`,s:`At`,d:`e a`,name:`At-211`,hl:`7,2 ч`,t:[`У`],tn:``,
+ act:`Клинические испытания I фазы; дозы подбираются (порядка МБк/кг, ориентир.)`,
+ use:`ТАТ: дифференцированный РЩЖ ([211At]NaAt), феохромоцитома ([211At]MABG), PSMA`,
+ ch:`Bi-209(α,2n)At-211, α-частицы ~28–29 МэВ`,
+ cm:`Нужен циклотрон с α-пучком ~30 МэВ и высоким током. Япония строит первую мультиплощадочную цепочку поставок [13]; ACSI заявляет для циклотрона TR-ALPHA до 4 Ки/сут [14]. T½ 7,2 ч ограничивает радиус доставки.`},
+{p:`A`,id:`i125`,a:`125`,s:`I`,d:`e`,name:`I-125`,hl:`59,4 сут`,t:[`Р`],tn:``,
+ act:`Брахитерапия: ~11–30 МБк на источник, десятки источников на имплантацию; in vitro (РИА) — кБк`,
+ use:`Постоянная брахитерапия простаты, офтальмоаппликаторы; РИА; метка`,
+ ch:`Xe-124(n,γ)Xe-125 (16,9 ч) →ЭЗ I-125 (обогащённый Xe-124)`,
+ cm:`Время облучения ограничивают из-за наработки примеси I-126. Микроисточники I-125 выпускаются в РФ [26].`},
+{p:`A`,id:`pd103`,a:`103`,s:`Pd`,d:`e`,name:`Pd-103`,hl:`17,0 сут`,t:[`У`,`Р`],tn:``,
+ act:`~37–110 МБк (1–3 мКи) на источник (ориентир.)`,
+ use:`Брахитерапия простаты, глаза`,
+ ch:`Rh-103(p,n)Pd-103 (циклотрон, n.c.a.); Pd-102(n,γ)Pd-103 (обогащённый Pd-102, c.a.)`,
+ cm:`Rh-103 моноизотопен — удобная циклотронная мишень.`},
+{p:`A`,id:`cs131`,a:`131`,s:`Cs`,d:`e`,name:`Cs-131`,hl:`9,7 сут`,t:[`Р`],tn:``,
+ act:`Единицы мКи на источник (ориентир.)`,
+ use:`Брахитерапия простаты, головного мозга`,
+ ch:`Ba-130(n,γ)Ba-131 (11,5 сут) →ЭЗ Cs-131`,
+ cm:`Нужен обогащённый Ba-130 (0,1% в природе).`},
+{p:`A`,id:`sn117m`,a:`117m`,s:`Sn`,d:`i`,name:`Sn-117m`,hl:`14,0 сут`,t:[`Р`,`У`],tn:``,
+ act:`По массе животного (ветеринария)`,
+ use:`РСЭ (ветеринарный препарат для суставов собак)`,
+ ch:`Sn-116(n,n'γ)Sn-117m (быстрые нейтроны, c.a.); Cd-116(α,3n)Sn-117m (циклотрон, n.c.a.)`,
+ cm:`Ускорительная технология разработана в ИЯИ РАН [19].`},
+// ---------- B: diagnostics ----------
+{p:`B`,id:`mo99`,a:`99`,s:`Mo`,d:`b`,name:`Mo-99 / Tc-99m`,hl:`66 ч / 6,0 ч`,t:[`Р`,`У`,`Г`],tn:`Р — основной; У — альтернативы; Г — Mo-99/Tc-99m`,
+ act:`Пациенту Tc-99m 185–1 110 МБк (остеосцинтиграфия ~500–740 МБк, перфузия миокарда до ~1 110 МБк); генератор — единицы–десятки Ки Mo-99 на дату калибровки (ориентир.); мировой спрос ~9 000–10 000 шестидневных Ки/нед.`,
+ use:`ОФЭКТ: кардиология, онкология, кости, почки, лёгкие, ЩЖ; более 40 млн процедур в год [1]`,
+ ch:`(1) U-235(n,f)Mo-99 на LEU-мишенях, выход ~6,1%; (2) Mo-98(n,γ)Mo-99, σ ≈ 0,13 б (экстракционные и гелевые генераторы); (3) Mo-100(γ,n)Mo-99 (ускоритель электронов); (4) подкритическая сборка с раствором LEU и D-T источниками нейтронов (SHINE)`,
+ cm:`~95% — шесть ИР, мощность в шестидневных Ки/нед.: BR2 — 8 600, SAFARI-1 — 6 200, LVR-15 — 3 200, MARIA — 3 000, HFR — 3 000, OPAL — 2 200 [1]. Конверсия мишеней на LEU у крупных производителей завершена (IRE — 2023 г.); BR2 отказывается от HEU-топлива в 2026 г. В РФ Mo-99 выпускают предприятия Росатома [24] (ИР ВВР-ц НИФХИ, НИИАР).`},
+{p:`B`,id:`tc99m`,a:`99m`,s:`Tc`,d:`i`,name:`Tc-99m, прямая наработка`,hl:`6,0 ч`,t:[`У`],tn:``,
+ act:`До ~814 ГБк (22 000 мКи) Tc-99m на партию на конец синтеза (система TRIUMF/ARTMS) [1]`,
+ use:`Те же, что для генераторного Tc-99m; региональное производство`,
+ ch:`Mo-100(p,2n)Tc-99m, протоны ~16–24 МэВ, обогащённый Mo-100`,
+ cm:`Одобрено Health Canada в ноябре 2020 г.; технология ARTMS приобретена Telix в 2024 г. [1]. Примеси Tc-98/Tc-97 ограничивают срок годности; без рецикла Mo-100 маршрут неэкономичен.`},
+{p:`B`,id:`i123`,a:`123`,s:`I`,d:`e`,name:`I-123`,hl:`13,2 ч`,t:[`У`],tn:``,
+ act:`ЩЖ 7,4–14,8 МБк; I-123-MIBG ~370 МБк; иофлупан 111–185 МБк`,
+ use:`ЩЖ, нейроэндокринные опухоли, симпатическая иннервация сердца, паркинсонизм`,
+ ch:`Xe-124(p,2n)Cs-123 → Xe-123 (2,1 ч) →ЭЗ I-123 (газовая мишень обогащённого Xe-124); Te-124(p,2n)I-123`,
+ cm:`Ксеноновый маршрут даёт продукт без примеси I-124; нужен циклотрон ~30 МэВ.`},
+{p:`B`,id:`tl201`,a:`201`,s:`Tl`,d:`e`,name:`Tl-201`,hl:`73 ч`,t:[`У`],tn:``,
+ act:`74–150 МБк`,
+ use:`Перфузия миокарда (ОФЭКТ)`,
+ ch:`Tl-203(p,3n)Pb-201 (9,3 ч) →ЭЗ Tl-201, протоны ~30 МэВ`,
+ cm:`Спрос падает: вытесняется Tc-99m-агентами и ПЭТ (Rb-82, N-13, F-18).`},
+{p:`B`,id:`in111`,a:`111`,s:`In`,d:`e`,name:`In-111`,hl:`2,80 сут`,t:[`У`],tn:``,
+ act:`111–222 МБк (пентетреотид); 10–18,5 МБк (мечение лейкоцитов)`,
+ use:`НЭО, очаги воспаления, цистернография`,
+ ch:`Cd-112(p,2n)In-111 или Cd-111(p,n)In-111 (обогащённый Cd)`,
+ cm:`При НЭО вытесняется Ga-68-DOTA-пептидами.`},
+{p:`B`,id:`ga67`,a:`67`,s:`Ga`,d:`e`,name:`Ga-67`,hl:`3,26 сут`,t:[`У`],tn:``,
+ act:`74–185 МБк (до ~370 МБк при лимфомах)`,
+ use:`Воспаление, инфекции, лимфомы`,
+ ch:`Zn-68(p,2n)Ga-67`,
+ cm:`Нишевой; спрос снижается в пользу ПЭТ с ФДГ.`},
+{p:`B`,id:`f18`,a:`18`,s:`F`,d:`e`,name:`F-18`,hl:`109,8 мин`,t:[`У`],tn:``,
+ act:`ФДГ 185–370 МБк (2–4 МБк/кг); за один сеанс облучения — до сотен ГБк для региональной доставки (ориентир.)`,
+ use:`ПЭТ: онкология (ФДГ, PSMA-лиганды), неврология (амилоид, тау), кости (NaF), кардиология`,
+ ch:`O-18(p,n)F-18 в обогащённой воде H₂¹⁸O (фторид); Ne-20(d,α)F-18 (электрофильный F₂)`,
+ cm:`Самый массовый ПЭТ-изотоп; циклотроны 10–19 МэВ; радиус доставки ~2–4 ч.`},
+{p:`B`,id:`c11`,a:`11`,s:`C`,d:`e`,name:`C-11 / N-13 / O-15`,hl:`20,4 мин / 10,0 мин / 2,04 мин`,t:[`У`],tn:``,
+ act:`C-11 (метионин, холин, PiB) 370–740 МБк; N-13-аммиак 370–740 МБк; O-15-вода ~400–1 100 МБк на введение`,
+ use:`ПЭТ: нейроонкология, перфузия миокарда и мозга, амилоид`,
+ ch:`N-14(p,α)C-11; O-16(p,α)N-13; N-14(d,n)O-15 или N-15(p,n)O-15`,
+ cm:`Только при циклотроне в самой клинике; для O-15 — рядом со сканером.`},
+{p:`B`,id:`ga68`,a:`68`,s:`Ga`,d:`e`,name:`Ga-68 / Ge-68`,hl:`67,7 мин / 271 сут`,t:[`Г`,`У`],tn:`Ge-68 — ускорительный; прямой Ga-68 — циклотрон`,
+ act:`Пациенту 100–200 МБк (~2 МБк/кг; Ga-68-PSMA-11 — 111–259 МБк); генератор 0,74–3,7 ГБк Ge-68 (ориентир.)`,
+ use:`ПЭТ: НЭО (DOTATATE/DOTATOC), рак простаты (PSMA), FAPI; отбор пациентов для РЛТ с Lu-177/Ac-225`,
+ ch:`Ga-69(p,2n)Ge-68 (протоны 20–70 МэВ) → генератор Ge-68/Ga-68; прямой Zn-68(p,n)Ga-68 (жидкая или твёрдая мишень на ПЭТ-циклотроне)`,
+ cm:`Ge-68 производят LANL [18], iThemba (Cyclone 70) [20], BNL, ARRONAX, в РФ — АО «Циклотрон» (Обнинск). Ge-68 идёт и на калибровочные источники ПЭТ.`},
+{p:`B`,id:`sr82`,a:`82`,s:`Sr`,d:`e`,name:`Sr-82 / Rb-82`,hl:`25,3 сут / 76 с`,t:[`У`,`Г`],tn:``,
+ act:`Партия Sr-82 на ускорителе 60–450 ГБк [17]; генератор 3,3–5,6 ГБк (90–150 мКи) Sr-82; пациенту Rb-82 370–2 220 МБк на введение (зависит от режима 2D/3D)`,
+ use:`ПЭТ-перфузия миокарда без циклотрона на месте`,
+ ch:`Rb-85(p,4n)Sr-82, протоны 40–100 МэВ, мишени RbCl или металлический Rb`,
+ cm:`Шесть производителей: BNL, LANL, ИЯИ РАН (Троицк), iThemba, ARRONAX, Nordion/TRIUMF [17]; ИЯИ РАН разработал собственный генератор Sr-82/Rb-82 [19].`},
+{p:`B`,id:`cu64`,a:`64`,s:`Cu`,d:`e b`,name:`Cu-64`,hl:`12,7 ч`,t:[`У`,`Р`],tn:`в основном циклотрон`,
+ act:`148 МБк (Cu-64-DOTATATE)`,
+ use:`ПЭТ: НЭО, PSMA (64Cu-SAR-bisPSMA — регистрационные испытания); пара к Cu-67`,
+ ch:`Ni-64(p,n)Cu-64 (обогащённый Ni-64); реактор: Zn-64(n,p)Cu-64 (быстрые нейтроны) или Cu-63(n,γ)Cu-64 (c.a.)`,
+ cm:`Длинный для ПЭТ T½ позволяет централизованное производство с доставкой за 1–2 сут.`},
+{p:`B`,id:`zr89`,a:`89`,s:`Zr`,d:`e`,name:`Zr-89`,hl:`78,4 ч`,t:[`У`],tn:``,
+ act:`37–74 МБк`,
+ use:`Иммуно-ПЭТ (меченые антитела)`,
+ ch:`Y-89(p,n)Zr-89 (моноизотопная мишень)`,
+ cm:`Медленная фармакокинетика антител требует T½ ~3 сут.`},
+{p:`B`,id:`i124`,a:`124`,s:`I`,d:`e`,name:`I-124`,hl:`4,18 сут`,t:[`У`],tn:``,
+ act:`37–74 МБк (ориентир.)`,
+ use:`ПЭТ-дозиметрия перед терапией I-131, иммуно-ПЭТ`,
+ ch:`Te-124(p,n)I-124 (обогащённый Te-124)`,
+ cm:`Даёт количественную дозиметрию для I-131-терапии.`},
+{p:`B`,id:`kr81m`,a:`81m`,s:`Kr`,d:`i`,name:`Kr-81m / Rb-81`,hl:`13 с / 4,6 ч`,t:[`У`,`Г`],tn:``,
+ act:`Генератор — сотни МБк Rb-81 (ориентир.)`,
+ use:`Вентиляционная сцинтиграфия лёгких`,
+ ch:`Kr-82(p,2n)Rb-81 (газовая мишень) или Br-79(α,2n)Rb-81`,
+ cm:`Генератор пригоден около суток — нужна близость к ускорителю.`},
+{p:`B`,id:`xe133`,a:`133`,s:`Xe`,d:`b`,name:`Xe-133`,hl:`5,25 сут`,t:[`Р`],tn:``,
+ act:`185–740 МБк (ингаляция)`,
+ use:`Вентиляция лёгких, мозговой кровоток`,
+ ch:`Продукт деления U-235 (попутно с Mo-99)`,
+ cm:`Выделяется на тех же установках переработки облучённых мишеней, что и Mo-99.`},
+{p:`B`,id:`cr51`,a:`51`,s:`Cr`,d:`e`,name:`Cr-51`,hl:`27,7 сут`,t:[`Р`],tn:``,
+ act:`1,1–3,7 МБк (Cr-51-ЭДТА, СКФ); мечение эритроцитов — единицы МБк`,
+ use:`Функциональная диагностика (СКФ, объём и выживаемость эритроцитов)`,
+ ch:`Cr-50(n,γ)Cr-51, обогащённый Cr-50, σ ≈ 15,9 б`,
+ cm:`Нишевой; доступен ИР среднего потока.`},
+// ---------- C: industrial ----------
+{p:`C`,id:`co60`,a:`60`,s:`Co`,d:`b`,name:`Co-60`,hl:`5,27 г`,t:[`Р`],tn:`в основном энергоблоки CANDU и РБМК; ИР — высокоудельный и нишевой`,
+ act:`Стерилизационные облучатели — десятки–сотни ПБк (1–5 млн Ки); телетерапия 150–450 ТБк; гамма-нож ~220 ТБк (≈ 6 000 Ки) в 192–201 источнике; дефектоскопия 0,4–4 ТБк (ориентир.)`,
+ use:`Стерилизация (~40% одноразовых медизделий), облучение пищевых продуктов, лучевая терапия, дефектоскопия толстостенных изделий, уровнемеры`,
+ ch:`Co-59(n,γ)Co-60, σ ≈ 37 б; облучение от месяцев до нескольких лет`,
+ cm:`Более половины мирового Co-60 — CANDU Bruce и Pickering; Darlington-1 переоборудован, первая выгрузка — конец 2026 — начало 2027 г. [21]. Westinghouse и Nordion готовят наработку в PWR США к середине 2030-х [22]. В РФ выпускается предприятиями Росатома [24].`},
+{p:`C`,id:`ir192`,a:`192`,s:`Ir`,d:`b`,name:`Ir-192`,hl:`73,8 сут`,t:[`Р`],tn:``,
+ act:`Радиография 0,4–3,7 ТБк (10–100 Ки); HDR-брахитерапия — источник 370–440 ГБк (10–12 Ки) с заменой каждые ~3–4 мес.`,
+ use:`Гамма-дефектоскопия сварных швов (сталь ~10–70 мм); HDR/PDR-брахитерапия`,
+ ch:`Ir-191(n,γ)Ir-192 (природный Ir — 37,3% Ir-191; σ ≈ 954 б)`,
+ cm:`Выгорание самого Ir-192 ограничивает удельную активность; для HDR-источников нужны обогащённый Ir-191 и поток ≥ 10¹⁴. Массовый продукт ИР; в РФ выпускается Росатомом [24].`},
+{p:`C`,id:`se75`,a:`75`,s:`Se`,d:`e`,name:`Se-75`,hl:`119,8 сут`,t:[`Р`],tn:``,
+ act:`Радиография до ~3 ТБк (~80 Ки)`,
+ use:`Дефектоскопия тонкостенной стали (~5–30 мм) с меньшей зоной ограждения, чем у Ir-192; медицинский тест SeHCAT (кБк)`,
+ ch:`Se-74(n,γ)Se-75, обогащённый Se-74 (0,89% в природе), σ ≈ 52 б`,
+ cm:`Больший T½ — реже перезарядка источников.`},
+{p:`C`,id:`yb169`,a:`169`,s:`Yb`,d:`e`,name:`Yb-169`,hl:`32,0 сут`,t:[`Р`],tn:``,
+ act:`Радиография — сотни ГБк (ориентир.)`,
+ use:`Дефектоскопия тонких стенок (2–15 мм), лёгких сплавов, композитов; брахитерапия (исследования)`,
+ ch:`Yb-168(n,γ)Yb-169, обогащённый Yb-168 (0,13% в природе), σ ≈ 2 300 б`,
+ cm:`Большое сечение позволяет работать на ИР среднего потока, но обогащённый Yb-168 дорог.`},
+{p:`C`,id:`cf252`,a:`252`,s:`Cf`,d:`a`,name:`Cf-252`,hl:`2,65 г`,t:[`Р`],tn:``,
+ act:`Источники от мкг до мг (1 мкг ≈ 2,3·10⁶ н/с, ≈ 20 МБк)`,
+ use:`Пуск реакторов, нейтронный каротаж, гамма-активационный анализ (поточные анализаторы угля и цемента), нейтронография, калибровка`,
+ ch:`Многократный захват на Pu-242, Am-243, Cm-244 → … → Cf-252; поток ≥ 10¹⁵, облучение годами`,
+ cm:`Нарабатывают только HFIR (ORNL) и СМ-3 (НИИАР). Альтернатива в каротаже — Am-Be источники (Am-241 выделяют из ОЯТ).`},
+{p:`C`,id:`pu238`,a:`238`,s:`Pu`,d:`a`,name:`Pu-238`,hl:`87,7 г`,t:[`Р`],tn:``,
+ act:`0,57 Вт/г (≈ 634 ГБк/г); РИТЭГ MMRTG — ~4,8 кг PuO₂`,
+ use:`РИТЭГ космических аппаратов`,
+ ch:`Np-237(n,γ)Np-238 (2,1 сут) →β⁻ Pu-238`,
+ cm:`США — HFIR и ATR, цель DOE ~1,5 кг/год (ориентир.); требуется радиохимическое разделение Pu и Np.`},
+{p:`C`,id:`ni63`,a:`63`,s:`Ni`,d:`b`,name:`Ni-63`,hl:`101 г`,t:[`Р`],tn:``,
+ act:`Детекторы электронного захвата 370–555 МБк (10–15 мКи); бетавольтаика — максимально возможная удельная активность`,
+ use:`ЭЗД в газовой хроматографии и детекторах ВВ; бетавольтаические источники питания`,
+ ch:`Ni-62(n,γ)Ni-63, обогащённый Ni-62, σ ≈ 14,5 б`,
+ cm:`Малое сечение и длинный T½ требуют большого флюенса (высокий поток, месяцы облучения); для бетавольтаики — дополнительное обогащение по Ni-63.`},
+{p:`C`,id:`c14`,a:`14`,s:`C`,d:`b`,name:`C-14`,hl:`5 730 лет`,t:[`Р`],tn:``,
+ act:`Синтез меченых соединений — ГБк на партию; уреазный дыхательный тест — 37–74 кБк`,
+ use:`Меченые соединения (ADME-исследования лекарств, агрохимия), тест на H. pylori, эталоны`,
+ ch:`N-14(n,p)C-14 (мишени AlN, Be₃N₂, Ca₃N₂), σ ≈ 1,8 б`,
+ cm:`Длительное облучение и химическое выделение в CO₂/BaCO₃; рынок небольшой и стабильный.`},
+{p:`C`,id:`h3`,a:`3`,s:`H`,d:`b`,name:`H-3`,hl:`12,3 г`,t:[`Р`],tn:`также детритизация тяжёлой воды CANDU`,
+ act:`Газонаполненные световые источники — от ГБк до десятков ГБк; знаки безопасности — до ~1 ТБк (ориентир.)`,
+ use:`Автономная подсветка, меченые соединения, мишени нейтронных генераторов, термоядерные исследования`,
+ ch:`Li-6(n,α)H-3; извлечение из тяжёлой воды CANDU`,
+ cm:`Основной гражданский источник — установки детритизации CANDU, а не ИР.`},
+{p:`C`,id:`pm147`,a:`147`,s:`Pm`,d:`b`,name:`Pm-147`,hl:`2,62 г`,t:[`Р`],tn:``,
+ act:`Толщиномеры — ГБк (ориентир.)`,
+ use:`Бета-толщиномеры (бумага, плёнки), светосоставы, бетавольтаика`,
+ ch:`Nd-146(n,γ)Nd-147 (11 сут) →β⁻ Pm-147; или выделение из продуктов деления`,
+ cm:`Нишевой продукт.`},
+{p:`C`,id:`tracers`,a:`82`,s:`Br`,d:`b`,name:`Активационные трассеры`,hl:`Br-82 (35,3 ч), Na-24 (15,0 ч), La-140 (40 ч), Au-198 (2,7 сут), Sc-46 (84 сут)`,t:[`Р`],tn:``,
+ act:`От сотен МБк до десятков ГБк на испытание (ориентир.)`,
+ use:`Диагностика промышленных установок: утечки в теплообменниках, время пребывания, расходометрия; гидрология, нефтедобыча`,
+ ch:`Br-81(n,γ)Br-82 (KBr), Na-23(n,γ)Na-24 (Na₂CO₃), La-139(n,γ)La-140, Au-197(n,γ)Au-198, Sc-45(n,γ)Sc-46`,
+ cm:`Облучение «под заказ» за 1–3 сут до испытания; типичная ниша университетских ИР с потоком 10¹²–10¹³.`},
+{p:`C`,id:`tla`,a:`56`,s:`Co`,d:`e`,name:`Тонкослойная активация`,hl:`Co-56, Co-57, Be-7 и др.`,t:[`У`],tn:``,
+ act:`кБк–МБк в поверхностном слое детали`,
+ use:`Контроль износа и коррозии деталей (двигатели, подшипники) в реальном времени`,
+ ch:`Fe-56(p,n)Co-56, Fe-57(p,n)Co-57 при облучении самой детали; имплантация Be-7`,
+ cm:`Циклотроны 10–40 МэВ (протоны, дейтроны); активируется слой глубиной десятки–сотни мкм.`},
+{p:`C`,id:`cd109`,a:`109`,s:`Cd`,d:`e`,name:`Cd-109`,hl:`461 сут`,t:[`У`,`Р`],tn:``,
+ act:`РФА-источники 0,37–1,5 ГБк (10–40 мКи, ориентир.)`,
+ use:`Портативный рентгенофлуоресцентный анализ (сплавы, свинец в покрытиях)`,
+ ch:`Ag-109(p,n)Cd-109 (циклотрон); Cd-108(n,γ)Cd-109 (обогащённый Cd-108)`,
+ cm:`Высокоудельный Cd-109 входит в номенклатуру LANL [18].`},
+{p:`C`,id:`fe55`,a:`55`,s:`Fe`,d:`e`,name:`Fe-55`,hl:`2,74 г`,t:[`У`,`Р`],tn:``,
+ act:`РФА-источники — от сотен МБк до единиц ГБк (ориентир.)`,
+ use:`РФА лёгких элементов, калибровка рентгеновских детекторов`,
+ ch:`Mn-55(p,n)Fe-55 (циклотрон, высокая удельная активность); Fe-54(n,γ)Fe-55 (реактор, низкая)`,
+ cm:`Излучение Mn Kα 5,9 кэВ — стандарт для калибровки детекторов.`},
+{p:`C`,id:`co57`,a:`57`,s:`Co`,d:`e`,name:`Co-57`,hl:`271,7 сут`,t:[`У`],tn:``,
+ act:`Мёссбауэровские источники 0,37–3,7 ГБк; плоские фантомы гамма-камер ~370–740 МБк; эталоны дозкалибраторов ~185 МБк (ориентир.)`,
+ use:`Мёссбауэровская спектроскопия, контроль качества гамма-камер и дозкалибраторов`,
+ ch:`Ni-58(p,2p)Co-57; Fe-56(d,n)Co-57`,
+ cm:`Известный поставщик мёссбауэровских источников — АО «Циклотрон» (Обнинск).`},
+{p:`C`,id:`na22`,a:`22`,s:`Na`,d:`e`,name:`Na-22`,hl:`2,60 г`,t:[`У`],tn:``,
+ act:`Позитронная спектроскопия — 0,4–1 МБк; калибровочные источники — от сотен кБк до единиц МБк (ориентир.)`,
+ use:`Позитронная аннигиляционная спектроскопия дефектов, калибровка ПЭТ`,
+ ch:`Mg-24(d,α)Na-22; Al-27(p,x)Na-22`,
+ cm:`Долгоживущий позитронный эталон.`}
+];
+
+const LADDER = [
+ {f:`10¹²–10¹³`, items:[[`Активационные трассеры (Br-82, Na-24, Au-198)`,`tracers`],[`Cr-51`,`cr51`],[`P-32 (c.a.)`,`p32`],[`Mo-99 по (n,γ) для генераторов малой активности`,`mo99`],[`НАА`,null]], where:`Университетские ИР`},
+ {f:`10¹³–10¹⁴`, items:[[`I-131 из TeO₂`,`i131`],[`Sm-153`,`sm153`],[`Ho-166`,`ho166`],[`c.a. Lu-177`,`lu177`],[`Ir-192 (дефектоскопия)`,`ir192`],[`Se-75`,`se75`],[`Yb-169`,`yb169`],[`Y-90 (микросферы)`,`y90`],[`Er-169`,`er169`],[`I-125`,`i125`],[`Re-186`,`re186`]], where:`ИР средней мощности`},
+ {f:`≥ 10¹⁴`, items:[[`Mo-99 делением на LEU-мишенях (при наличии переработки)`,`mo99`],[`n.c.a. Lu-177`,`lu177`],[`Tb-161`,`tb161`],[`Высокоудельный Ir-192`,`ir192`],[`Ac-227 для Ra-223`,`ra223`]], where:`BR2, HFR, SAFARI-1, LVR-15, MARIA (2·10¹⁴), OPAL`},
+ {f:`~10¹⁵`, items:[[`W-188`,`re188`],[`Cf-252`,`cf252`],[`Высокоудельный Ni-63`,`ni63`],[`Th-229 из Ra-226`,`ac225`],[`Pu-238`,`pu238`]], where:`HFIR, СМ-3, ILL, ATR`}
+];
+
+const DECAY = {b:`β⁻`, e:`β⁺/ЭЗ`, a:`α`, i:`изомерный переход`};
+const TYPE = {'Р':{c:`b-r`,l:`реакторный`},'У':{c:`b-u`,l:`ускорительный`},'Г':{c:`b-g`,l:`генераторный`}};
+
+const esc = s => String(s).replace(/&/g,`&amp;`).replace(/</g,`&lt;`).replace(/>/g,`&gt;`).replace(/"/g,`&quot;`);
+const RX = /[A-Z][a-z]?-\d+m?(?:\([^()]*\)[A-Z][a-z]?-\d+m?)+/g;
+function refs(html){
+  return html.replace(/\[(\d+)\]/g,(m,n)=>{const s=SRC[+n]; if(!s) return m;
+    return `<sup class="ref"><a href="${esc(s.u)}" target="_blank" rel="noopener" title="${esc(s.t)}">${n}</a></sup>`;});
+}
+const rich = s => refs(esc(s).replace(RX, m=>`<span class="rx">${m}</span>`));
+
+function tile(r, sm){
+  const d = r.d.split(` `);
+  const style = d.length>1 ? ` style="background:linear-gradient(135deg,var(--d-${d[0]}) 0 50%,var(--d-${d[1]}) 50% 100%)"` : ``;
+  const title = `${r.name} · ${r.hl} · распад: ${d.map(x=>DECAY[x]).join(` + `)} · ${r.t.map(x=>TYPE[x].l).join(`, `)}`;
+  const tag = sm ? `span` : `a`;
+  const href = sm ? `` : ` href="#row-${r.id}"`;
+  return `<${tag} class="tile${sm?` sm`:``} d-${d[0]}"${href}${style} title="${esc(title)}"${sm?` aria-hidden="true"`:``}>`+
+    `<span class="A">${esc(r.a)}</span><span class="S">${esc(r.s)}</span>`+
+    (sm?``:`<span class="M">${r.t.join(``)}</span><span class="T">${esc(r.hl.split(` / `)[0])}</span>`)+
+    `</${tag}>`;
+}
+const badge = t => `<span class="b ${TYPE[t].c}" title="${TYPE[t].l}">${t}</span>`;
+
+// map
+const map = document.getElementById(`map`);
+map.innerHTML = Object.keys(PARTS).map(p=>{
+  const rs = ROWS.filter(r=>r.p===p);
+  return `<div class="map-group"><div class="map-label">${esc(PARTS[p].title.split(`. `)[0])} · ${esc(PARTS[p].short)} <b>${rs.length}</b></div><div class="tiles">${rs.map(r=>tile(r,false)).join(``)}</div></div>`;
+}).join(``);
+
+// legend
+const cnt = t => ROWS.filter(r=>r.t.includes(t)).length;
+document.getElementById(`legend`).innerHTML =
+  Object.keys(DECAY).map(k=>`<span><i class="sw" style="background:var(--d-${k})"></i>${DECAY[k]}</span>`).join(``)+
+  Object.keys(TYPE).map(t=>`<span>${badge(t)} ${TYPE[t].l} · ${cnt(t)}</span>`).join(``)+
+  `<span>Плитка ведёт к строке таблицы</span>`;
+
+// static refs
+document.querySelectorAll(`[data-refs]`).forEach(el=>{ el.innerHTML = refs(el.innerHTML); });
+
+// sources
+document.getElementById(`src`).innerHTML = SRC.slice(1).map((s,i)=>
+  `<li id="src-${i+1}"><a href="${esc(s.u)}" target="_blank" rel="noopener">${esc(s.t)}</a> <span class="m">— ${esc(s.m)}</span></li>`).join(``);
+
+// ladder
+document.getElementById(`ladder`).innerHTML = LADDER.map(b=>
+  `<div class="step"><div class="bar"></div><div class="flux">${b.f}<small>н/(см²·с), тепловые нейтроны</small></div>`+
+  `<div class="chips">${b.items.map(([l,id])=> id?`<a class="chip" href="#row-${id}">${esc(l)}</a>`:`<span class="chip">${esc(l)}</span>`).join(``)}</div>`+
+  `<div class="where"><b>Примеры:</b> ${esc(b.where)}</div></div>`).join(``);
+
+// filters
+const state = {part:`all`, types:new Set([`Р`,`У`,`Г`]), q:``};
+const seg = document.getElementById(`seg-part`);
+const partBtns = [[`all`,`Все`,ROWS.length]].concat(Object.keys(PARTS).map(p=>[p,`${PARTS[p].title.split(`. `)[0]} · ${PARTS[p].short}`,ROWS.filter(r=>r.p===p).length]));
+seg.innerHTML = partBtns.map(([k,l,n])=>`<button type="button" id="part-${k}" data-part="${k}" aria-pressed="${k===`all`}">${esc(l)}<span>${n}</span></button>`).join(``);
+const segT = document.getElementById(`seg-type`);
+segT.innerHTML = Object.keys(TYPE).map(t=>`<button type="button" class="tg" id="type-${TYPE[t].c}" data-type="${t}" aria-pressed="true">${badge(t)}${TYPE[t].l}</button>`).join(``);
+const q = document.getElementById(`q`);
+
+ROWS.forEach(r=>{ r._s = [r.name,r.hl,r.tn,r.act,r.use,r.ch,r.cm,r.t.join(` `)].join(` `).toLowerCase(); });
+
+const tbody = document.getElementById(`tbody`);
+function render(){
+  const qs = state.q.trim().toLowerCase();
+  let html = ``, shown = 0;
+  Object.keys(PARTS).forEach(p=>{
+    if(state.part!==`all` && state.part!==p) return;
+    const rs = ROWS.filter(r=>r.p===p && r.t.some(t=>state.types.has(t)) && (!qs || r._s.includes(qs)));
+    if(!rs.length) return;
+    shown += rs.length;
+    html += `<tr class="grp"><td colspan="6"><h3>${esc(PARTS[p].title)}</h3><p>${rich(PARTS[p].intro)}</p></td></tr>`;
+    html += rs.map(r=>`<tr class="row" id="row-${r.id}">`+
+      `<td class="c-iso"><div class="iso">${tile(r,true)}<div><div class="nm">${esc(r.name)}</div><div class="hl">${esc(r.hl)}</div></div></div></td>`+
+      `<td class="c-type" data-label="Тип"><div class="typebox">${r.t.map(badge).join(``)}</div>${r.tn?`<div class="tnote">${esc(r.tn)}</div>`:``}</td>`+
+      `<td data-label="Требуемая активность">${rich(r.act)}</td>`+
+      `<td data-label="Область применения">${rich(r.use)}</td>`+
+      `<td data-label="Цепочка получения">${rich(r.ch)}</td>`+
+      `<td data-label="Комментарии">${rich(r.cm)}</td></tr>`).join(``);
+    if(PARTS[p].note && !qs) html += `<tr class="note"><td colspan="6">${rich(PARTS[p].note)}</td></tr>`;
+  });
+  if(!shown) html = `<tr class="empty"><td colspan="6">По этим условиям ничего не найдено.<br><button type="button" id="reset-filters">Сбросить фильтры</button></td></tr>`;
+  tbody.innerHTML = html;
+  document.getElementById(`count`).textContent = `Показано ${shown} из ${ROWS.length}`;
+  seg.querySelectorAll(`button`).forEach(b=>b.setAttribute(`aria-pressed`, String(b.dataset.part===state.part)));
+  segT.querySelectorAll(`button`).forEach(b=>b.setAttribute(`aria-pressed`, String(state.types.has(b.dataset.type))));
+}
+function reset(){ state.part=`all`; state.types=new Set([`Р`,`У`,`Г`]); state.q=``; q.value=``; render(); }
+
+seg.addEventListener(`click`,e=>{const b=e.target.closest(`button`); if(!b) return; state.part=b.dataset.part; render();});
+segT.addEventListener(`click`,e=>{const b=e.target.closest(`button`); if(!b) return; const t=b.dataset.type;
+  if(state.types.has(t)) state.types.delete(t); else state.types.add(t); render();});
+q.addEventListener(`input`,()=>{state.q=q.value; render();});
+tbody.addEventListener(`click`,e=>{ if(e.target.closest(`#reset-filters`)) reset(); });
+
+const reduce = window.matchMedia && window.matchMedia(`(prefers-reduced-motion: reduce)`).matches;
+document.addEventListener(`click`,e=>{
+  const a = e.target.closest(`a[href^="#row-"]`); if(!a) return;
+  e.preventDefault();
+  const id = a.getAttribute(`href`).slice(1);
+  if(!document.getElementById(id)) reset();
+  const el = document.getElementById(id); if(!el) return;
+  el.scrollIntoView({behavior: reduce?`auto`:`smooth`, block:`center`});
+  el.classList.remove(`flash`); void el.offsetWidth; el.classList.add(`flash`);
+});
+
+render();
+})();
+</script>
+
+</body></html>
